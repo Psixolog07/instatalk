@@ -1,13 +1,12 @@
 <p id="notice"><%= notice %></p>
+<h2 class="my-2">Сейчас на сайте:</h2>
+
+<div id="online_users">
+  <% @online_users.each do |user| %>
+    <p id="<%= user.id %>"><%= user.nickname %></p>
+  <% end %>
+</div>
 
 <h1>Rooms</h1>
-
-<div class="users_online"></div>
-
-<ul class="mt-4 list-unstyled">
-  <%= render @rooms %>
-</ul>
-
-<div class="mt-2">
-  <%= render 'rooms/form', room: @room %>
-</div>
+<ul class="mt-4 list-unstyled"><%= render @rooms %></ul>
+<div class="mt-2"><%= render 'rooms/form', room: @room %></div>

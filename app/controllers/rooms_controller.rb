@@ -4,6 +4,7 @@ class RoomsController < ApplicationController
   def index
     @rooms = Room.all
     @room = Room.new
+    @online_users = User.where(online: true)
   end
 
   def show
@@ -11,7 +12,6 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.create!
-
     redirect_to @room, notice: 'Room was successfully created.'
   end
 

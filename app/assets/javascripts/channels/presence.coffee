@@ -1,22 +1,15 @@
-App.presence = App.cable.subscriptions.create "CurrentChannel",
+App.presence = App.cable.subscriptions.create "PresenceChannel",
   connected: ->
-    console.log('CurrentChannel connected')
+    console.log("PresenceChannel connected")
 
   disconnected: ->
-    console.log('CurrentChannel disconnected')
+    console.log("PresenceChannel disconnected")
 
   received: (data) ->
-    console.log('CurrentChannel received')
+    console.log("PresenceChannel received")
 
-    App.presence.online_users(data.users)
-
-  online_users: (users) ->
-    if (users.length > 0)
-      all_users = users.map((user) -> "<span class='text-success ml-2'>#{user.nickname}</span>").join('')
-      text =
-        "<div>
-          <h3 class='text-info'>Online users</h3>
-            #{all_users}
-        </div>"
-
-      $('.online_users').html(text)
+    if (data["status"] == "online")
+      $("#online_users").append "<p id='#{data["user_id"]}'>#{data["nickname"]}</p>"
+    
+    if (data["status"] == "offline")
+      $("##{data["user_id"]}").remove()
