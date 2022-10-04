@@ -1,18 +1,15 @@
 class PresenceChannel < ApplicationCable::Channel
   def unsubscribed
-    unless ActionCable.server.connections.map(&:current_user).include?(current_user)
-      channel_action("offline")
-      current_user.update(online: false)
-    end
+    current_user.online = current_user.online - 1
+    current_user.save
+    channel_action("offline") if current_user.online == 0
   end
 
   def subscribed
     stream_from "presence_channel"
-
-    unless current_user.online
-      channel_action("online")
-      current_user.update(online: true)
-    end
+    channel_action("online") if current_user.online == 0
+    current_user.online = current_user.online + 1
+    current_user.save
   end
 
   def channel_action(status)
