@@ -2,6 +2,8 @@ jQuery(document).on 'turbolinks:load', ->
   messages = $('#messages')
 
   if messages.length > 0
+    if App.room
+      App.cable.subscriptions.remove(App.room)
     createRoomChannel messages.data('room-id')
 
   $(document).on 'keypress', '#message_body', (event) ->
